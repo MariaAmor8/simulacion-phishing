@@ -83,90 +83,99 @@ logSimulationEvent('landing_page_loaded', $sessionId);
 </head>
 <body class="portal-body">
     <main class="portal-shell">
-        <section class="brand-panel" aria-label="Informacion institucional">
-            <div class="brand-header">
-                <div class="brand-mark" aria-hidden="true">SV</div>
-                <div>
-                    <p class="eyebrow">Hospital San Vital</p>
-                    <p class="brand-subtitle">Red asistencial interna</p>
+        <header class="browser-chrome" aria-label="Ventana de acceso institucional">
+            <div class="browser-topbar">
+                <div class="browser-controls" aria-hidden="true">
+                    <span class="browser-control browser-control--red"></span>
+                    <span class="browser-control browser-control--amber"></span>
+                    <span class="browser-control browser-control--green"></span>
+                </div>
+                <p class="browser-title">Portal Clinico | Hospital San Vital</p>
+                <div class="browser-actions" aria-hidden="true">
+                    <span></span>
+                    <span></span>
                 </div>
             </div>
-
-            <h1>Portal Clinico Institucional</h1>
-            <p class="lead">
-                Plataforma interna para consulta operativa, trazabilidad administrativa y
-                validacion de acceso sobre recursos clinicos institucionales.
-            </p>
-
-            <dl class="meta-list" aria-label="Datos del acceso institucional">
-                <div>
-                    <dt>Dominio esperado</dt>
-                    <dd>mail.hospital.com</dd>
+            <div class="browser-toolbar">
+                <div class="browser-nav" aria-hidden="true">
+                    <span></span>
+                    <span></span>
                 </div>
-                <div>
-                    <dt>Entorno</dt>
-                    <dd>Acceso interno controlado</dd>
+                <div class="browser-address">
+                    <span class="browser-lock" aria-hidden="true"></span>
+                    <span>mail.hospital.com/acceso</span>
                 </div>
-                <div>
-                    <dt>Validacion</dt>
-                    <dd>Requerida antes de continuar</dd>
-                </div>
-            </dl>
-
-            <div class="notice-card">
-                <p class="notice-label">Aviso de seguridad</p>
-                <p>
-                    Debido a la actualizacion de politicas de proteccion de datos y continuidad
-                    operativa, el acceso debe validarse unicamente desde rutas institucionales
-                    verificadas.
-                </p>
             </div>
-        </section>
+        </header>
 
-        <section class="login-card" aria-labelledby="login-title">
-            <div class="login-card__header">
-                <p class="section-kicker">Acceso seguro institucional</p>
-                <h2 id="login-title">Validacion de acceso requerida</h2>
-                <p>
-                    Ingrese sus credenciales institucionales para validar la continuidad de sesion
-                    sobre el dominio oficial <strong>mail.hospital.com</strong>.
-                </p>
+        <section class="portal-page" aria-label="Acceso institucional">
+            <div class="portal-page__header">
+                <p class="eyebrow">Hospital San Vital</p>
+                <h1>Bienvenido al portal clinico.</h1>
             </div>
 
-            <div class="login-card__status" aria-label="Estado del portal">
-                <span class="status-dot" aria-hidden="true"></span>
-                Servicio disponible para personal autorizado
+            <div class="portal-page__body">
+                <section class="login-pane" aria-labelledby="login-title">
+                    <div class="login-pane__intro">
+                        <h2 id="login-title">Validacion de acceso</h2>
+                        <p class="lead">
+                            Para continuar, confirme sus credenciales institucionales desde
+                            <strong>mail.hospital.com</strong>.
+                        </p>
+                    </div>
+
+                    <form method="post" class="login-form" novalidate>
+                        <label class="sr-only" for="institutional_user">Usuario o correo institucional</label>
+                        <input
+                            type="text"
+                            id="institutional_user"
+                            name="institutional_user"
+                            placeholder="nombre.apellido@mail.hospital.com"
+                            autocomplete="username"
+                            required
+                        >
+
+                        <label class="sr-only" for="password">Contrasena</label>
+                        <input
+                            type="password"
+                            id="password"
+                            name="password"
+                            placeholder="Contrasena"
+                            autocomplete="current-password"
+                            required
+                        >
+
+                        <button type="submit">Iniciar sesion</button>
+                    </form>
+
+                    <p class="helper-text">Acceso exclusivo para personal autorizado y cuentas institucionales verificadas.</p>
+                    <p class="support-link">Problemas con el acceso?</p>
+                </section>
+
+                <aside class="credential-visual" aria-label="Credencial institucional ilustrativa">
+                    <div class="credential-visual__orbit" aria-hidden="true"></div>
+                    <div class="credential-stack" aria-hidden="true">
+                        <span class="credential-stack__back credential-stack__back--one"></span>
+                        <span class="credential-stack__back credential-stack__back--two"></span>
+                        <article class="credential-card">
+                            <div class="credential-card__header">
+                                <div class="credential-card__brand">
+                                    <span class="credential-card__mark">SV</span>
+                                    <div>
+                                        <p>Hospital San Vital</p>
+                                        <small>Acceso institucional</small>
+                                    </div>
+                                </div>
+                                <span class="credential-card__badge">ID</span>
+                            </div>
+                            <div class="credential-card__body">
+                                <p class="credential-card__role">Personal clinico autorizado</p>
+                                <p class="credential-card__domain">mail.hospital.com</p>
+                            </div>
+                        </article>
+                    </div>
+                </aside>
             </div>
-
-            <form method="post" class="login-form" novalidate>
-                <label for="institutional_user">Usuario o correo institucional</label>
-                <input
-                    type="text"
-                    id="institutional_user"
-                    name="institutional_user"
-                    placeholder="nombre.apellido@mail.hospital.com"
-                    autocomplete="username"
-                    required
-                >
-                <p class="input-hint">Use exclusivamente cuentas emitidas bajo el dominio institucional.</p>
-
-                <label for="password">Contrasena</label>
-                <input
-                    type="password"
-                    id="password"
-                    name="password"
-                    placeholder="Ingrese su contrasena"
-                    autocomplete="current-password"
-                    required
-                >
-
-                <button type="submit">Validar acceso</button>
-            </form>
-
-            <p class="helper-text">
-                Acceso restringido al personal autorizado del Hospital San Vital. Toda validacion
-                debe completarse desde <strong>mail.hospital.com</strong>.
-            </p>
         </section>
     </main>
 </body>
