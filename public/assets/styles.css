@@ -51,124 +51,20 @@ body {
 .portal-body {
     color: #1d3342;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
-        linear-gradient(135deg, #dde4ea 0%, #cfd7df 100%);
+        radial-gradient(circle at top right, rgba(210, 224, 235, 0.28), transparent 36%),
+        linear-gradient(180deg, #f8fbfd 0%, #eef3f7 100%);
 }
 
 .portal-shell {
     width: min(980px, 100%);
-    overflow: hidden;
-    border: 1px solid rgba(71, 89, 104, 0.28);
-    border-radius: 10px;
-    background: #f8fafc;
-    box-shadow: 0 18px 45px rgba(34, 47, 58, 0.24);
-}
-
-.browser-chrome {
-    border-bottom: 1px solid rgba(88, 102, 113, 0.24);
-    background: linear-gradient(180deg, #f4f4f4 0%, #d8dde1 100%);
-}
-
-.browser-topbar,
-.browser-toolbar {
-    display: grid;
-    grid-template-columns: auto 1fr auto;
-    align-items: center;
-    gap: 14px;
-    padding: 10px 14px;
-}
-
-.browser-topbar {
-    padding-bottom: 8px;
-}
-
-.browser-controls,
-.browser-actions,
-.browser-nav {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-}
-
-.browser-control,
-.browser-actions span,
-.browser-nav span {
-    display: inline-block;
-    border-radius: 999px;
-}
-
-.browser-control {
-    width: 12px;
-    height: 12px;
-    border: 1px solid rgba(0, 0, 0, 0.18);
-}
-
-.browser-control--red {
-    background: #eb6a5f;
-}
-
-.browser-control--amber {
-    background: #f0c04d;
-}
-
-.browser-control--green {
-    background: #70c15e;
-}
-
-.browser-title {
-    margin: 0;
-    text-align: center;
-    color: #344551;
-    font-size: 0.92rem;
-}
-
-.browser-actions span,
-.browser-nav span {
-    width: 14px;
-    height: 14px;
-    border: 1px solid rgba(74, 89, 100, 0.34);
-    background: rgba(255, 255, 255, 0.66);
-}
-
-.browser-address {
-    min-height: 34px;
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    padding: 0 14px;
-    border: 1px solid rgba(89, 104, 117, 0.34);
-    border-radius: 18px;
-    background: linear-gradient(180deg, #fcfcfc 0%, #eef2f5 100%);
-    color: #4f6370;
-    font-size: 0.92rem;
-}
-
-.browser-lock {
-    width: 10px;
-    height: 10px;
-    border-radius: 2px;
-    background: #7b8e9a;
-    position: relative;
-}
-
-.browser-lock::before {
-    content: "";
-    position: absolute;
-    left: 1px;
-    right: 1px;
-    bottom: 8px;
-    height: 7px;
-    border: 2px solid #7b8e9a;
-    border-bottom: none;
-    border-radius: 10px 10px 0 0;
 }
 
 .portal-page {
-    background: #ffffff;
+    background: transparent;
 }
 
 .portal-page__header {
-    padding: 36px 36px 18px;
+    padding: 14px 0 22px;
     border-bottom: 1px solid rgba(94, 108, 120, 0.16);
 }
 
@@ -177,7 +73,7 @@ body {
     grid-template-columns: minmax(0, 430px) minmax(280px, 1fr);
     gap: 40px;
     align-items: center;
-    padding: 30px 36px 42px;
+    padding: 34px 0 8px;
 }
 
 .eyebrow,
@@ -426,20 +322,31 @@ h2 {
 .education-body {
     color: #22313e;
     background:
-        linear-gradient(180deg, rgba(255, 255, 255, 0.72), rgba(255, 255, 255, 0.72)),
-        linear-gradient(135deg, #edf1f4 0%, #dfe6eb 100%);
+        radial-gradient(circle at top left, rgba(180, 204, 220, 0.26), transparent 34%),
+        radial-gradient(circle at bottom right, rgba(219, 230, 238, 0.75), transparent 28%),
+        linear-gradient(135deg, #edf3f7 0%, #dde6ed 100%);
 }
 
 .education-card,
 .education-body .info-panel {
-    background: rgba(250, 251, 252, 0.98);
-    border: 1px solid rgba(63, 81, 93, 0.14);
+    background: rgba(253, 254, 255, 0.96);
+    border: 1px solid rgba(63, 81, 93, 0.12);
     border-radius: var(--radius-xl);
     box-shadow: var(--shadow-md);
 }
 
 .education-card {
-    padding: 40px;
+    position: relative;
+    overflow: hidden;
+    padding: 44px;
+}
+
+.education-card::before {
+    content: "";
+    position: absolute;
+    inset: 0 0 auto 0;
+    height: 10px;
+    background: linear-gradient(90deg, #2f6d97 0%, #6ea9ca 52%, #d7e9f4 100%);
 }
 
 .education-header {
@@ -460,9 +367,47 @@ h2 {
 .education-banner {
     margin-top: 26px;
     padding: 18px 20px;
+    border: 1px solid rgba(73, 113, 139, 0.14);
     border-left: 4px solid #5b6a76;
     border-radius: 0 var(--radius-md) var(--radius-md) 0;
-    background: #eef2f5;
+    background: linear-gradient(180deg, #f4f8fb 0%, #ebf2f6 100%);
+}
+
+.education-highlights {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-top: 24px;
+}
+
+.education-pill {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;
+    padding: 18px 18px 16px;
+    border: 1px solid rgba(77, 107, 127, 0.12);
+    border-radius: var(--radius-lg);
+    background: linear-gradient(180deg, rgba(247, 251, 253, 0.96), rgba(239, 246, 250, 0.96));
+    box-shadow: var(--shadow-sm);
+}
+
+.education-pill p {
+    margin: 0;
+    color: #3f5565;
+    line-height: 1.55;
+}
+
+.education-pill__label {
+    flex: 0 0 auto;
+    width: 32px;
+    height: 32px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    background: linear-gradient(180deg, #2e6c95 0%, #234f70 100%);
+    color: #ffffff;
+    font-weight: 700;
 }
 
 .education-grid {
@@ -473,7 +418,10 @@ h2 {
 }
 
 .education-body .info-panel {
-    padding: 24px;
+    padding: 28px;
+    background:
+        linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(246, 250, 252, 0.98)),
+        #ffffff;
 }
 
 .info-panel ul {
@@ -485,8 +433,15 @@ h2 {
 
 .education-footer {
     margin-top: 30px;
-    padding-top: 22px;
+    padding-top: 24px;
     border-top: 1px solid rgba(63, 81, 93, 0.14);
+}
+
+.education-footer__title {
+    margin: 0 0 10px;
+    color: #2d4656;
+    font-size: 1.05rem;
+    font-weight: 700;
 }
 
 @media (max-width: 960px) {
@@ -506,6 +461,10 @@ h2 {
     .education-grid {
         grid-template-columns: 1fr;
     }
+
+    .education-highlights {
+        grid-template-columns: 1fr;
+    }
 }
 
 @media (max-width: 640px) {
@@ -521,12 +480,6 @@ h2 {
         padding: 26px;
     }
 
-    .browser-topbar,
-    .browser-toolbar {
-        grid-template-columns: auto 1fr;
-    }
-
-    .browser-actions,
     .credential-visual {
         display: none;
     }

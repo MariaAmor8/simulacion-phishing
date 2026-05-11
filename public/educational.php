@@ -39,26 +39,40 @@ logEducationalEvent('education_page_redirected', $sessionId);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulacion Academica | Hospital San Vital</title>
+    <title>Recomendaciones de Seguridad | Hospital San Vital</title>
     <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body class="education-body">
     <main class="education-shell">
         <section class="education-card">
             <div class="education-header">
-                <p class="eyebrow">Cierre del ejercicio</p>
-                <h1>Esta interaccion correspondia a una simulacion academica</h1>
+                <p class="eyebrow">Aviso de seguridad</p>
+                <h1>Esta interaccion hacia parte de una simulacion de seguridad</h1>
                 <p class="lead">
                     El objetivo era mostrar como una solicitud aparentemente formal puede inducir a
-                    ingresar credenciales en una pagina no confirmada. El flujo termina aqui para
-                    reforzar la pausa de verificacion antes de confiar en un acceso.
+                    ingresar credenciales en una pagina no confirmada. Antes de confiar en un acceso,
+                    conviene detenerse unos segundos y revisar las senales clave.
                 </p>
             </div>
 
             <div class="education-banner" role="note" aria-label="Resumen del ejercicio">
                 <strong>Resultado clave:</strong>
-                No se almacenaron usuarios ni contrasenas. El laboratorio solo registro metadatos
-                minimos para fines pedagogicos.
+                No se almacenaron usuarios ni contrasenas. Solo se registraron metadatos minimos de interaccion.
+            </div>
+
+            <div class="education-highlights" aria-label="Puntos clave de verificacion">
+                <article class="education-pill">
+                    <span class="education-pill__label">1</span>
+                    <p>Revise el remitente antes de abrir enlaces de acceso.</p>
+                </article>
+                <article class="education-pill">
+                    <span class="education-pill__label">2</span>
+                    <p>Confirme que el dominio esperado sea <strong>mail.hospital.com</strong>.</p>
+                </article>
+                <article class="education-pill">
+                    <span class="education-pill__label">3</span>
+                    <p>Si hay urgencia injustificada, haga una pausa antes de autenticarse.</p>
+                </article>
             </div>
 
             <div class="education-grid">
@@ -85,6 +99,7 @@ logEducationalEvent('education_page_redirected', $sessionId);
             </div>
 
             <div class="education-footer">
+                <p class="education-footer__title">Regla simple para futuros accesos</p>
                 <p>
                     Revise siempre el dominio, la ruta de acceso y el contexto de la solicitud antes
                     de autenticarse. En un entorno real, esa pausa suele marcar la diferencia entre
