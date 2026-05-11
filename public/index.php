@@ -99,19 +99,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $trimmedPassword = trim($password);
 
     if ($trimmedUser === '') {
-        $errors['institutional_user'] = 'Ingrese un usuario o correo institucional de ejemplo.';
+        $errors['institutional_user'] = 'Ingrese un usuario o correo institucional.';
     } elseif ($institutionalUser !== $trimmedUser) {
         $errors['institutional_user'] = 'Elimine espacios al inicio o al final del correo.';
     } elseif (preg_match('/\s/', $trimmedUser) === 1) {
         $errors['institutional_user'] = 'El correo no debe contener espacios.';
     } elseif (filter_var($trimmedUser, FILTER_VALIDATE_EMAIL) === false) {
-        $errors['institutional_user'] = 'Ingrese un correo con formato valido para este ejercicio.';
+        $errors['institutional_user'] = 'Ingrese un correo con formato valido.';
     } elseif (extractEmailDomain($trimmedUser) !== 'hospital.com') {
-        $errors['institutional_user'] = 'Para este ejercicio, use un correo institucional de ejemplo con dominio @hospital.com.';
+        $errors['institutional_user'] = 'Use un correo institucional con dominio @hospital.com.';
     }
 
     if ($trimmedPassword === '') {
-        $errors['password'] = 'Ingrese la contrasena para continuar con el ejercicio.';
+        $errors['password'] = 'Ingrese la contrasena para continuar.';
     } elseif ($password !== $trimmedPassword) {
         $errors['password'] = 'Elimine espacios al inicio o al final de la contrasena.';
     }
@@ -157,10 +157,7 @@ logSimulationEvent('landing_page_loaded', $sessionId);
                             portal debe validarse antes de continuar. De lo contrario, no sera
                             posible ingresar.
                         </p>
-                        <p class="field-note">
-                            Para este ejercicio, use un correo institucional de ejemplo con dominio
-                            <strong>@hospital.com</strong>.
-                        </p>
+                        <p class="field-note">Use su correo institucional.</p>
                     </div>
 
                     <form method="post" class="login-form" novalidate>
@@ -189,7 +186,7 @@ logSimulationEvent('landing_page_loaded', $sessionId);
                                 <?= $firstInvalidField === 'institutional_user' ? 'autofocus' : '' ?>
                                 required
                             >
-                            <p class="field-note" id="institutional_user_note">Use un correo de ejemplo sin espacios y con formato institucional.</p>
+                            <p class="field-note" id="institutional_user_note">Use un correo institucional sin espacios y con formato valido.</p>
                             <?php if (isset($errors['institutional_user'])): ?>
                                 <p class="field-error" id="institutional_user_error"><?= escapeHtml($errors['institutional_user']) ?></p>
                             <?php endif; ?>
@@ -208,7 +205,7 @@ logSimulationEvent('landing_page_loaded', $sessionId);
                                 <?= $firstInvalidField === 'password' ? 'autofocus' : '' ?>
                                 required
                             >
-                            <p class="field-note" id="password_note">Ingrese la contrasena del ejercicio sin espacios al inicio o al final.</p>
+                            <p class="field-note" id="password_note">Ingrese su contrasena sin espacios al inicio o al final.</p>
                             <?php if (isset($errors['password'])): ?>
                                 <p class="field-error" id="password_error"><?= escapeHtml($errors['password']) ?></p>
                             <?php endif; ?>

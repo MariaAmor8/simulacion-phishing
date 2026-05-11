@@ -56,7 +56,7 @@ body {
 }
 
 .portal-shell {
-    width: min(980px, 100%);
+    width: min(1060px, 100%);
 }
 
 .portal-page {
@@ -70,8 +70,8 @@ body {
 
 .portal-page__body {
     display: grid;
-    grid-template-columns: minmax(0, 430px) minmax(280px, 1fr);
-    gap: 40px;
+    grid-template-columns: minmax(0, 460px) minmax(300px, 1fr);
+    gap: 28px;
     align-items: center;
     padding: 34px 0 8px;
 }
@@ -506,7 +506,7 @@ h2 {
 
 @media (max-width: 960px) {
     .portal-shell {
-        width: min(740px, 100%);
+        width: min(820px, 100%);
     }
 
     .portal-page__body {
