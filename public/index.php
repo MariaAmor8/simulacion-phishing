@@ -3,9 +3,14 @@ declare(strict_types=1);
 
 /**
  * Registra eventos pedagogicos con metadatos minimos.
- * Nunca almacena el usuario ni la contrasena enviados en el formulario.
+ * Nunca almacena el correo completo ni la contrasena enviados en el formulario.
  */
-function logSimulationEvent(string $eventType, string $sessionId, string $redirectStatus = 'not_applicable'): void
+function logSimulationEvent(
+    string $eventType,
+    string $sessionId,
+    string $redirectStatus = 'not_applicable',
+    string $emailDomain = 'not_applicable'
+): void
 {
     $logDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs';
     $logFile = $logDir . DIRECTORY_SEPARATOR . 'interactions.log';
@@ -17,16 +22,38 @@ function logSimulationEvent(string $eventType, string $sessionId, string $redire
     $timestamp = date('Y-m-d H:i:s');
     $source = 'portal_simulado';
     $line = sprintf(
-        "%s | session_id=%s | event=%s | source=%s | redirect_status=%s | credentials_stored=false%s",
+        "%s | session_id=%s | event=%s | source=%s | redirect_status=%s | email_domain=%s | credentials_stored=false%s",
         $timestamp,
         $sessionId,
         $eventType,
         $source,
         $redirectStatus,
+        $emailDomain,
         PHP_EOL
     );
 
     file_put_contents($logFile, $line, FILE_APPEND | LOCK_EX);
+}
+
+function extractEmailDomain(string $submittedUser): string
+{
+    $normalizedUser = strtolower(trim($submittedUser));
+
+    if ($normalizedUser === '') {
+        return 'not_provided';
+    }
+
+    $atPosition = strrpos($normalizedUser, '@');
+    if ($atPosition === false || $atPosition === strlen($normalizedUser) - 1) {
+        return 'not_provided';
+    }
+
+    return substr($normalizedUser, $atPosition + 1);
+}
+
+function escapeHtml(string $value): string
+{
+    return htmlspecialchars($value, ENT_QUOTES, 'UTF-8');
 }
 
 /**
@@ -55,20 +82,52 @@ function getSimulationSessionId(): string
 }
 
 $sessionId = getSimulationSessionId();
+$errors = [];
+$institutionalUser = '';
+$password = '';
+$firstInvalidField = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     /**
-     * Se reciben los campos solo para descartarlos de inmediato.
-     * No se validan contra sistemas reales, no se registran y no se reutilizan.
+     * Se reciben los campos para validaciones educativas de consistencia.
+     * No se validan contra sistemas reales, no se registran completos y no se reutilizan.
      */
-    $submittedUser = $_POST['institutional_user'] ?? '';
-    $submittedPassword = $_POST['password'] ?? '';
+    $institutionalUser = (string) ($_POST['institutional_user'] ?? '');
+    $password = (string) ($_POST['password'] ?? '');
 
-    unset($submittedUser, $submittedPassword);
+    $trimmedUser = trim($institutionalUser);
+    $trimmedPassword = trim($password);
 
-    logSimulationEvent('form_submitted', $sessionId, 'redirecting_to_educational_page');
-    header('Location: educational.php');
-    exit;
+    if ($trimmedUser === '') {
+        $errors['institutional_user'] = 'Ingrese un usuario o correo institucional de ejemplo.';
+    } elseif ($institutionalUser !== $trimmedUser) {
+        $errors['institutional_user'] = 'Elimine espacios al inicio o al final del correo.';
+    } elseif (preg_match('/\s/', $trimmedUser) === 1) {
+        $errors['institutional_user'] = 'El correo no debe contener espacios.';
+    } elseif (filter_var($trimmedUser, FILTER_VALIDATE_EMAIL) === false) {
+        $errors['institutional_user'] = 'Ingrese un correo con formato valido para este ejercicio.';
+    } elseif (extractEmailDomain($trimmedUser) !== 'hospital.com') {
+        $errors['institutional_user'] = 'Para este ejercicio, use un correo institucional de ejemplo con dominio @hospital.com.';
+    }
+
+    if ($trimmedPassword === '') {
+        $errors['password'] = 'Ingrese la contrasena para continuar con el ejercicio.';
+    } elseif ($password !== $trimmedPassword) {
+        $errors['password'] = 'Elimine espacios al inicio o al final de la contrasena.';
+    }
+
+    if ($errors !== []) {
+        $firstInvalidField = array_key_first($errors);
+        $password = '';
+    } else {
+        $emailDomain = extractEmailDomain($trimmedUser);
+
+        unset($password, $trimmedPassword);
+
+        logSimulationEvent('form_submitted', $sessionId, 'redirecting_to_educational_page', $emailDomain);
+        header('Location: educational.php');
+        exit;
+    }
 }
 
 logSimulationEvent('landing_page_loaded', $sessionId);
@@ -95,31 +154,65 @@ logSimulationEvent('landing_page_loaded', $sessionId);
                         <h2 id="login-title">Validacion de acceso requerida</h2>
                         <p class="lead">
                             Por actualizacion de politicas de proteccion de datos, el acceso al
-                            portal debe validarse antes de continuar desde
-                            <strong>mail.hospital.com</strong>. De lo contrario, no sera posible ingresar.
+                            portal debe validarse antes de continuar. De lo contrario, no sera
+                            posible ingresar.
+                        </p>
+                        <p class="field-note">
+                            Para este ejercicio, use un correo institucional de ejemplo con dominio
+                            <strong>@hospital.com</strong>.
                         </p>
                     </div>
 
                     <form method="post" class="login-form" novalidate>
-                        <label class="sr-only" for="institutional_user">Usuario o correo institucional</label>
-                        <input
-                            type="text"
-                            id="institutional_user"
-                            name="institutional_user"
-                            placeholder="nombre.apellido@mail.hospital.com"
-                            autocomplete="username"
-                            required
-                        >
+                        <?php if ($errors !== []): ?>
+                            <div class="form-alert" role="alert" aria-live="assertive" tabindex="-1">
+                                <p>Revise los campos marcados antes de continuar.</p>
+                                <ul>
+                                    <?php foreach ($errors as $error): ?>
+                                        <li><?= escapeHtml($error) ?></li>
+                                    <?php endforeach; ?>
+                                </ul>
+                            </div>
+                        <?php endif; ?>
 
-                        <label class="sr-only" for="password">Contrasena</label>
-                        <input
-                            type="password"
-                            id="password"
-                            name="password"
-                            placeholder="Contrasena"
-                            autocomplete="current-password"
-                            required
-                        >
+                        <div class="field-group">
+                            <label class="sr-only" for="institutional_user">Usuario o correo institucional</label>
+                            <input
+                                type="text"
+                                id="institutional_user"
+                                name="institutional_user"
+                                placeholder="nombre.apellido@hospital.com"
+                                autocomplete="username"
+                                value="<?= escapeHtml($institutionalUser) ?>"
+                                aria-invalid="<?= isset($errors['institutional_user']) ? 'true' : 'false' ?>"
+                                aria-describedby="institutional_user_note<?= isset($errors['institutional_user']) ? ' institutional_user_error' : '' ?>"
+                                <?= $firstInvalidField === 'institutional_user' ? 'autofocus' : '' ?>
+                                required
+                            >
+                            <p class="field-note" id="institutional_user_note">Use un correo de ejemplo sin espacios y con formato institucional.</p>
+                            <?php if (isset($errors['institutional_user'])): ?>
+                                <p class="field-error" id="institutional_user_error"><?= escapeHtml($errors['institutional_user']) ?></p>
+                            <?php endif; ?>
+                        </div>
+
+                        <div class="field-group">
+                            <label class="sr-only" for="password">Contrasena</label>
+                            <input
+                                type="password"
+                                id="password"
+                                name="password"
+                                placeholder="Contrasena"
+                                autocomplete="current-password"
+                                aria-invalid="<?= isset($errors['password']) ? 'true' : 'false' ?>"
+                                aria-describedby="password_note<?= isset($errors['password']) ? ' password_error' : '' ?>"
+                                <?= $firstInvalidField === 'password' ? 'autofocus' : '' ?>
+                                required
+                            >
+                            <p class="field-note" id="password_note">Ingrese la contrasena del ejercicio sin espacios al inicio o al final.</p>
+                            <?php if (isset($errors['password'])): ?>
+                                <p class="field-error" id="password_error"><?= escapeHtml($errors['password']) ?></p>
+                            <?php endif; ?>
+                        </div>
 
                         <button type="submit">Validar acceso</button>
                     </form>
@@ -155,6 +248,10 @@ logSimulationEvent('landing_page_loaded', $sessionId);
                     </div>
                 </aside>
             </div>
+
+            <footer class="portal-footer" aria-label="Aviso de simulacion">
+                <p>Simulacion de seguridad institucional.</p>
+            </footer>
         </section>
     </main>
 </body>

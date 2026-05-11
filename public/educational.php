@@ -21,7 +21,7 @@ function logEducationalEvent(string $eventType, string $sessionId): void
 
     $timestamp = date('Y-m-d H:i:s');
     $line = sprintf(
-        "%s | session_id=%s | event=%s | source=portal_simulado | redirect_status=completed | credentials_stored=false%s",
+        "%s | session_id=%s | event=%s | source=portal_simulado | redirect_status=completed | email_domain=not_applicable | credentials_stored=false%s",
         $timestamp,
         $sessionId,
         $eventType,
@@ -67,7 +67,7 @@ logEducationalEvent('education_page_redirected', $sessionId);
                 </article>
                 <article class="education-pill">
                     <span class="education-pill__label">2</span>
-                    <p>Confirme que el dominio esperado sea <strong>mail.hospital.com</strong>.</p>
+                    <p>Confirme que el dominio esperado sea <strong>portal.sanvital.org</strong>.</p>
                 </article>
                 <article class="education-pill">
                     <span class="education-pill__label">3</span>
@@ -90,9 +90,9 @@ logEducationalEvent('education_page_redirected', $sessionId);
                     <h2>Buenas practicas recomendadas</h2>
                     <ul>
                         <li>Verificar cuidadosamente el remitente y el contexto operativo del mensaje.</li>
-                        <li>Confirmar que la direccion pertenezca al dominio esperado: <strong>mail.hospital.com</strong>.</li>
+                        <li>Confirmar que la direccion pertenezca al dominio esperado: <strong>portal.sanvital.org</strong>.</li>
                         <li>No ingresar credenciales desde enlaces recibidos por correo.</li>
-                        <li>Acceder manualmente al portal oficial escribiendo <strong>mail.hospital.com</strong>.</li>
+                        <li>Acceder manualmente al portal oficial escribiendo <strong>portal.sanvital.org</strong>.</li>
                         <li>Reportar mensajes sospechosos al area de seguridad institucional.</li>
                     </ul>
                 </article>

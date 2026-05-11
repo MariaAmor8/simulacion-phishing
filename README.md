@@ -1,83 +1,73 @@
-# Simulación académica de phishing para concientización
+# Simulacion de phishing para concientizacion
 
-Este proyecto implementa una simulación web ficticia del **Portal Clínico San Vital** para un laboratorio académico de ciberseguridad. El entorno está diseñado exclusivamente para formación y concientización en un contexto controlado. No debe utilizarse contra usuarios reales ni fuera de escenarios autorizados de laboratorio.
+Este proyecto implementa una simulacion web ficticia del **Portal Clinico San Vital** para ejercicios de concientizacion en ciberseguridad dentro de un entorno controlado. La aplicacion no autentica contra sistemas reales, no reenvia datos y no almacena contrasenas.
 
-## Propósito del proyecto
+## Proposito
 
-La simulación representa un flujo típico de ingeniería social: una supuesta validación de acceso motivada por una actualización de políticas de protección de datos. Después de la interacción con el formulario, el sistema redirige inmediatamente a una página educativa que explica el ejercicio y refuerza buenas prácticas para detectar phishing.
+La experiencia representa una supuesta validacion de acceso motivada por una actualizacion de politicas de proteccion de datos. Despues de interactuar con el formulario, el usuario es redirigido a una pagina educativa con recomendaciones para reconocer senales de phishing.
 
-## Alcance ético
+## Alcance etico
 
-- Proyecto ficticio para formación académica en entorno controlado.
-- No debe usarse contra usuarios reales, organizaciones reales ni infraestructuras de producción.
-- No incluye mecanismos para capturar credenciales, reenviarlas, almacenarlas o utilizarlas.
-- No incluye instrucciones para suplantación de dominios reales, evasión de controles o despliegues engañosos.
+- Proyecto ficticio para formacion y concientizacion en entorno controlado.
+- No debe usarse contra usuarios reales, organizaciones reales ni infraestructuras de produccion.
+- No incluye mecanismos para autenticar, reenviar credenciales ni reutilizar datos ingresados.
+- No incluye instrucciones para suplantacion de dominios reales, evasion de controles o despliegues enganiosos.
 
 ## Estructura del proyecto
 
 ```text
 simulacion-phishing/
-├── public/
-│   ├── index.php
-│   ├── educational.php
-│   └── assets/
-│       └── styles.css
-├── logs/
-│   └── interactions.log
-├── nginx/
-│   └── simulacion.conf
-└── README.md
+|-- public/
+|   |-- index.php
+|   |-- educational.php
+|   `-- assets/
+|       `-- styles.css
+|-- logs/
+|   `-- interactions.log
+|-- nginx/
+|   `-- simulacion.conf
+`-- README.md
 ```
 
 ## Flujo funcional
 
 1. El usuario abre `public/index.php`.
-2. Se muestra la interfaz ficticia del Portal Clínico Institucional.
-3. Al enviar el formulario, `index.php` recibe la petición `POST`.
-4. Los campos de usuario y contraseña se descartan inmediatamente en memoria.
-5. Se registra solo un evento mínimo de interacción en `logs/interactions.log`.
+2. Se muestra la interfaz ficticia del Portal Clinico Institucional.
+3. Al enviar el formulario, `index.php` recibe la peticion `POST`.
+4. La contrasena se descarta inmediatamente en memoria y el correo solo se usa para extraer su dominio.
+5. Se registra un evento minimo de interaccion en `logs/interactions.log`.
 6. El usuario es redirigido a `public/educational.php`.
-7. La página educativa explica que la interacción fue parte de una simulación académica.
+7. La pagina educativa muestra recomendaciones para detectar accesos sospechosos.
 
 ## Eventos registrados
 
-El sistema registra únicamente metadatos mínimos y nunca almacena credenciales. Los eventos previstos son:
+El sistema registra metadatos minimos y nunca almacena credenciales ni el correo completo. Los eventos previstos son:
 
 - `landing_page_loaded`
 - `form_submitted`
 - `education_page_redirected`
 
-Ejemplo de línea de log permitida:
+Ejemplo de linea de log permitida:
 
 ```text
-2026-05-10 15:30:45 | session_id=SIM-8F31A | event=form_submitted | source=portal_simulado | redirect_status=redirecting_to_educational_page | credentials_stored=false
+2026-05-10 15:30:45 | session_id=SIM-8F31A | event=form_submitted | source=portal_simulado | redirect_status=redirecting_to_educational_page | email_domain=hospital.com | credentials_stored=false
 ```
 
 ## Privacidad y manejo de datos
 
-- No se almacenan credenciales.
-- No se recolectan datos clínicos.
+- No se almacenan contrasenas.
+- No se almacena el correo completo; solo puede registrarse su dominio como metadato de interaccion.
+- No se recolectan datos clinicos.
 - No se usan usuarios reales.
-- Los logs son temporales.
-- Los logs deben eliminarse al finalizar el laboratorio.
-- Los datos registrados solo sirven para fines pedagógicos.
+- Los logs son temporales y deben eliminarse al finalizar la practica.
 
-## Ejecución en entorno local o de laboratorio
-
-Esta aplicación puede probarse de dos maneras:
-
-- Prueba rápida local con el servidor embebido de PHP.
-- Despliegue completo en Ubuntu con `nginx + php-fpm`.
-
-## Prueba rápida local con PHP
+## Prueba local rapida
 
 ### Requisitos
 
 - PHP 8.1 o superior
 
-### Arranque rápido
-
-Para una validación local sencilla, puede ejecutar:
+### Arranque
 
 ```bash
 php -S 127.0.0.1:8000 -t public
@@ -85,60 +75,42 @@ php -S 127.0.0.1:8000 -t public
 
 Luego abra `http://127.0.0.1:8000`.
 
-## Despliegue completo en Ubuntu
+## Despliegue en Ubuntu con nginx + php-fpm
 
-Esta guía asume un servidor Ubuntu estándar, un usuario con privilegios `sudo` y un entorno de laboratorio controlado. No documenta exposición pública, HTTPS real ni integración con sistemas externos porque eso queda fuera del alcance ético y técnico de esta simulación.
+Esta guia asume un servidor Ubuntu estandar, un usuario con privilegios `sudo` y un entorno controlado.
 
-### 1. Instalar dependencias del sistema
-
-Actualice los índices de paquetes e instale `nginx`, `php-fpm` y las utilidades básicas de PHP:
+### 1. Instalar dependencias
 
 ```bash
 sudo apt update
 sudo apt install -y nginx php-fpm php-cli
 ```
 
-Verifique que los servicios queden instalados:
+Verificacion basica:
 
 ```bash
 systemctl status nginx
 systemctl status php*-fpm
 ```
 
-### 2. Copiar el proyecto al servidor
+### 2. Copiar el proyecto
 
-Use como ruta recomendada:
+Ruta sugerida:
 
 ```text
 /var/www/simulacion-phishing
 ```
 
-Copie o despliegue el repositorio en esa carpeta. Por ejemplo, si ya tiene el proyecto localmente:
+Ejemplo:
 
 ```bash
 sudo mkdir -p /var/www
 sudo cp -r /ruta/local/simulacion-phishing /var/www/simulacion-phishing
-```
-
-Luego entre al proyecto y confirme que la estructura esperada existe:
-
-```bash
 cd /var/www/simulacion-phishing
 ls
-ls public logs nginx
 ```
 
-Debe ver al menos:
-
-- `public/`
-- `logs/`
-- `nginx/`
-
-### 3. Ajustar permisos mínimos
-
-El proyecto debe poder leerse normalmente, pero solo el proceso web debe escribir en `logs/`. En Ubuntu, `nginx` y `php-fpm` suelen ejecutar como `www-data`.
-
-Ejemplo de permisos recomendados:
+### 3. Ajustar permisos
 
 ```bash
 sudo chown -R $USER:www-data /var/www/simulacion-phishing
@@ -151,126 +123,57 @@ sudo chown www-data:www-data /var/www/simulacion-phishing/logs/interactions.log
 sudo chmod 664 /var/www/simulacion-phishing/logs/interactions.log
 ```
 
-Con esta configuración, el contenido de la aplicación queda legible y el directorio `logs/` queda disponible para escritura por parte del servicio web.
+### 4. Ajustar Nginx
 
-### 4. Ajustar la plantilla de Nginx del proyecto
+Revise `nginx/simulacion.conf` y adapte los placeholders operativos segun su servidor:
 
-Edite `nginx/simulacion.conf` y reemplace los placeholders antes de activarla:
+- `root /ruta/al/proyecto/simulacion-phishing/public;`
+- `error_log /ruta/al/proyecto/simulacion-phishing/logs/nginx_error.log warn;`
+- `fastcgi_pass 127.0.0.1:9000;` o el socket real de `php-fpm`
 
-1. `server_name completar;`
-   Use la IP o nombre DNS interno del servidor de laboratorio.
-2. `root /ruta/al/proyecto/simulacion-phishing/public;`
-   Reemplace por:
-
-```nginx
-root /var/www/simulacion-phishing/public;
-```
-
-3. `fastcgi_pass 127.0.0.1:9000;`
-   En Ubuntu se recomienda usar el socket Unix de `php-fpm`.
-
-Primero identifique el socket real:
+Para identificar el socket:
 
 ```bash
 ls /run/php/
 ```
 
-Normalmente verá algo parecido a:
-
-```text
-php8.3-fpm.sock
-php8.3-fpm.pid
-```
-
-Con ese dato, ajuste la línea a algo como:
+Ejemplo de ajuste:
 
 ```nginx
 fastcgi_pass unix:/run/php/php8.3-fpm.sock;
 ```
 
-Mantenga `access_log off;` para evitar que Nginx genere metadatos adicionales fuera del alcance pedagógico de la simulación. El archivo funcional esperado para el laboratorio sigue siendo únicamente `logs/interactions.log`.
+Mantenga `access_log off;` para no generar metadatos adicionales fuera del archivo funcional principal `logs/interactions.log`.
 
-### 5. Activar el sitio en Nginx
-
-Copie la plantilla ajustada a `sites-available`:
+### 5. Activar el sitio
 
 ```bash
 sudo cp /var/www/simulacion-phishing/nginx/simulacion.conf /etc/nginx/sites-available/simulacion
-```
-
-Active el sitio:
-
-```bash
 sudo ln -s /etc/nginx/sites-available/simulacion /etc/nginx/sites-enabled/simulacion
-```
-
-Si el sitio por defecto está habilitado y no lo necesita, desactívelo:
-
-```bash
 sudo rm -f /etc/nginx/sites-enabled/default
 ```
 
-### 6. Validar la configuración y arrancar servicios
-
-Pruebe la sintaxis de Nginx:
+### 6. Validar y recargar servicios
 
 ```bash
 sudo nginx -t
-```
-
-Reinicie `php-fpm` con la versión instalada. Sustituya `X.Y` por su versión real, por ejemplo `8.3`:
-
-```bash
 sudo systemctl restart phpX.Y-fpm
 sudo systemctl reload nginx
-```
-
-Habilite ambos servicios para que inicien automáticamente:
-
-```bash
 sudo systemctl enable nginx
 sudo systemctl enable phpX.Y-fpm
 ```
 
-Si quiere comprobarlos:
+### 7. Validacion funcional
 
-```bash
-systemctl status nginx
-systemctl status phpX.Y-fpm
-```
+Abra la aplicacion en el navegador y valide:
 
-### 7. Abrir el firewall solo si aplica
-
-Si `ufw` está habilitado en el servidor, permita HTTP:
-
-```bash
-sudo ufw allow 'Nginx HTTP'
-```
-
-Puede comprobar el estado del firewall con:
-
-```bash
-sudo ufw status
-```
-
-Si `ufw` no está activo, este paso no es necesario.
-
-### 8. Validar el funcionamiento de la aplicación
-
-Abra en un navegador:
-
-```text
-http://IP_DEL_SERVIDOR/
-```
-
-Realice esta validación:
-
-1. Confirmar que carga la landing del Portal Clínico San Vital.
-2. Ingresar datos ficticios en los campos del formulario.
-3. Pulsar `Validar acceso`.
-4. Confirmar redirección inmediata a `educational.php`.
-5. Revisar el archivo `logs/interactions.log`.
-6. Verificar que no aparezcan ni el usuario ni la contraseña digitados.
+1. Carga de la landing del Portal Clinico San Vital.
+2. Ingreso de datos ficticios en el formulario.
+3. Click en `Validar acceso`.
+4. Redireccion inmediata a `educational.php`.
+5. Presencia de eventos en `logs/interactions.log`.
+6. Ausencia de contrasena y de correo completo en el log.
+7. Presencia de `email_domain=...` cuando el formulario trae un correo con dominio valido.
 
 Puede inspeccionar el log con:
 
@@ -278,37 +181,29 @@ Puede inspeccionar el log con:
 cat /var/www/simulacion-phishing/logs/interactions.log
 ```
 
-Los eventos esperados son:
+## Resolucion breve de problemas
 
-- `landing_page_loaded`
-- `form_submitted`
-- `education_page_redirected`
-
-### 9. Resolución breve de problemas
-
-**Error 502 Bad Gateway**
+### Error 502 Bad Gateway
 
 - Revise que `fastcgi_pass` apunte al socket real de `php-fpm`.
-- Confirme que `phpX.Y-fpm` esté activo con `systemctl status phpX.Y-fpm`.
+- Confirme que `phpX.Y-fpm` este activo.
 
-**Página en blanco o error PHP**
+### Pagina en blanco o error PHP
 
-- Revise el log de errores de Nginx definido en la configuración.
-- Confirme que `index.php` y `educational.php` estén dentro de `public/`.
+- Revise el `error_log` configurado en Nginx.
+- Confirme que `index.php` y `educational.php` esten dentro de `public/`.
 
-**No se escribe `logs/interactions.log`**
+### No se escribe `logs/interactions.log`
 
-- Revise que `logs/` pertenezca a `www-data`.
-- Confirme permisos de escritura sobre `logs/` y `interactions.log`.
+- Revise propietario y permisos de `logs/`.
+- Confirme permisos sobre `logs/interactions.log`.
 
-**Se abre otro sitio o da 404**
+### Se abre otro sitio o da 404
 
-- Revise que `root` apunte exactamente a `/var/www/simulacion-phishing/public`.
-- Confirme que el sitio correcto esté habilitado en `/etc/nginx/sites-enabled/`.
+- Revise que `root` apunte exactamente a la carpeta `public`.
+- Confirme que el sitio correcto este habilitado en `/etc/nginx/sites-enabled/`.
 
-## Limpieza de logs al finalizar el laboratorio
-
-Puede vaciar o eliminar el archivo temporal de logs cuando termine la práctica.
+## Limpieza de logs
 
 En Linux:
 
@@ -316,13 +211,11 @@ En Linux:
 truncate -s 0 /var/www/simulacion-phishing/logs/interactions.log
 ```
 
-O eliminarlo por completo:
+O eliminarlo:
 
 ```bash
 rm /var/www/simulacion-phishing/logs/interactions.log
 ```
-
-Si elimina el archivo, la aplicación volverá a crearlo cuando se registre un nuevo evento.
 
 En PowerShell:
 
@@ -330,18 +223,17 @@ En PowerShell:
 Clear-Content .\logs\interactions.log
 ```
 
-O eliminarlo por completo:
+O eliminarlo:
 
 ```powershell
 Remove-Item .\logs\interactions.log
 ```
 
-Si elimina el archivo, la aplicación volverá a crearlo cuando se registre un nuevo evento.
-
-## Notas de implementación
+## Notas de implementacion
 
 - `public/index.php` genera o recupera un `session_id` ficticio con formato `SIM-XXXXX`.
-- El formulario existe solo para la simulación visual del escenario.
-- Las credenciales recibidas se descartan inmediatamente con `unset(...)`.
-- `public/educational.php` registra únicamente el evento final de redirección educativa.
-- `logs/interactions.log` nunca debe contener usuario, correo ni contraseña.
+- El formulario existe solo para la simulacion visual del escenario.
+- La contrasena recibida se descarta inmediatamente con `unset(...)`.
+- El correo no se almacena completo; solo se conserva su dominio para registrarlo como `email_domain` cuando aplica.
+- `public/educational.php` registra el evento final de redireccion educativa.
+- `logs/interactions.log` nunca debe contener contrasena ni el correo completo.
