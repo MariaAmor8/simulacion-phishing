@@ -34,7 +34,7 @@ simulacion-phishing/
 1. El usuario abre `public/index.php`.
 2. Se muestra la interfaz ficticia del Portal Clinico Institucional.
 3. Al enviar el formulario, `index.php` recibe la peticion `POST`.
-4. La contrasena se descarta inmediatamente en memoria y el correo solo se usa para extraer su dominio.
+4. La contrasena se descarta inmediatamente en memoria y el correo solo se usa para generar un hash de seguimiento.
 5. Se registra un evento minimo de interaccion en `logs/interactions.log`.
 6. El usuario es redirigido a `public/educational.php`.
 7. La pagina educativa muestra recomendaciones para detectar accesos sospechosos.
@@ -50,13 +50,13 @@ El sistema registra metadatos minimos y nunca almacena credenciales ni el correo
 Ejemplo de linea de log permitida:
 
 ```text
-2026-05-10 15:30:45 | session_id=SIM-8F31A | event=form_submitted | source=portal_simulado | redirect_status=redirecting_to_educational_page | email_domain=hospital.com | credentials_stored=false
+2026-05-10 15:30:45 | session_id=SIM-8F31A | event=form_submitted | source=portal_simulado | redirect_status=redirecting_to_educational_page | email_hash=4e3b1d7a... | credentials_stored=false
 ```
 
 ## Privacidad y manejo de datos
 
 - No se almacenan contrasenas.
-- No se almacena el correo completo; solo puede registrarse su dominio como metadato de interaccion.
+- No se almacena el correo completo; solo puede registrarse un hash del correo como metadato de seguimiento.
 - No se recolectan datos clinicos.
 - No se usan usuarios reales.
 - Los logs son temporales y deben eliminarse al finalizar la practica.
@@ -173,7 +173,7 @@ Abra la aplicacion en el navegador y valide:
 4. Redireccion inmediata a `educational.php`.
 5. Presencia de eventos en `logs/interactions.log`.
 6. Ausencia de contrasena y de correo completo en el log.
-7. Presencia de `email_domain=...` cuando el formulario trae un correo con dominio valido.
+7. Presencia de `email_hash=...` cuando el formulario trae un correo valido.
 
 Puede inspeccionar el log con:
 
@@ -234,6 +234,6 @@ Remove-Item .\logs\interactions.log
 - `public/index.php` genera o recupera un `session_id` ficticio con formato `SIM-XXXXX`.
 - El formulario existe solo para la simulacion visual del escenario.
 - La contrasena recibida se descarta inmediatamente con `unset(...)`.
-- El correo no se almacena completo; solo se conserva su dominio para registrarlo como `email_domain` cuando aplica.
+- El correo no se almacena completo; solo se conserva un hash para registrarlo como `email_hash` cuando aplica.
 - `public/educational.php` registra el evento final de redireccion educativa.
 - `logs/interactions.log` nunca debe contener contrasena ni el correo completo.

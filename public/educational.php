@@ -21,7 +21,7 @@ function logEducationalEvent(string $eventType, string $sessionId): void
 
     $timestamp = date('Y-m-d H:i:s');
     $line = sprintf(
-        "%s | session_id=%s | event=%s | source=portal_simulado | redirect_status=completed | email_domain=not_applicable | credentials_stored=false%s",
+        "%s | session_id=%s | event=%s | source=portal_simulado | redirect_status=completed | email_hash=not_applicable | credentials_stored=false%s",
         $timestamp,
         $sessionId,
         $eventType,

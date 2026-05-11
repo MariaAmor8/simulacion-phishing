@@ -9,7 +9,7 @@ function logSimulationEvent(
     string $eventType,
     string $sessionId,
     string $redirectStatus = 'not_applicable',
-    string $emailDomain = 'not_applicable'
+    string $emailHash = 'not_applicable'
 ): void
 {
     $logDir = dirname(__DIR__) . DIRECTORY_SEPARATOR . 'logs';
@@ -22,13 +22,13 @@ function logSimulationEvent(
     $timestamp = date('Y-m-d H:i:s');
     $source = 'portal_simulado';
     $line = sprintf(
-        "%s | session_id=%s | event=%s | source=%s | redirect_status=%s | email=%s | credentials_stored=false%s",
+        "%s | session_id=%s | event=%s | source=%s | redirect_status=%s | email_hash=%s | credentials_stored=false%s",
         $timestamp,
         $sessionId,
         $eventType,
         $source,
         $redirectStatus,
-        $emailDomain,
+        $emailHash,
         PHP_EOL
     );
 
@@ -43,11 +43,23 @@ function extractEmailDomain(string $submittedUser): string
         return 'not_provided';
     }
 
-    if (!filter_var($normalizedUser, FILTER_VALIDATE_EMAIL)) {
+    $atPosition = strrpos($normalizedUser, '@');
+    if ($atPosition === false || $atPosition === strlen($normalizedUser) - 1) {
         return 'not_provided';
     }
 
-    return $normalizedUser;
+    return substr($normalizedUser, $atPosition + 1);
+}
+
+function hashEmailAddress(string $submittedUser): string
+{
+    $normalizedUser = strtolower(trim($submittedUser));
+
+    if ($normalizedUser === '' || filter_var($normalizedUser, FILTER_VALIDATE_EMAIL) === false) {
+        return 'not_provided';
+    }
+
+    return hash('sha256', $normalizedUser);
 }
 
 function escapeHtml(string $value): string
@@ -119,11 +131,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $firstInvalidField = array_key_first($errors);
         $password = '';
     } else {
-        $emailDomain = extractEmailDomain($trimmedUser);
+        $emailHash = hashEmailAddress($trimmedUser);
 
         unset($password, $trimmedPassword);
 
-        logSimulationEvent('form_submitted', $sessionId, 'redirecting_to_educational_page', $emailDomain);
+        logSimulationEvent('form_submitted', $sessionId, 'redirecting_to_educational_page', $emailHash);
         header('Location: educational.php');
         exit;
     }
