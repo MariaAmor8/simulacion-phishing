@@ -22,7 +22,7 @@ function logSimulationEvent(
     $timestamp = date('Y-m-d H:i:s');
     $source = 'portal_simulado';
     $line = sprintf(
-        "%s | session_id=%s | event=%s | source=%s | redirect_status=%s | email_domain=%s | credentials_stored=false%s",
+        "%s | session_id=%s | event=%s | source=%s | redirect_status=%s | email=%s | credentials_stored=false%s",
         $timestamp,
         $sessionId,
         $eventType,
@@ -43,12 +43,11 @@ function extractEmailDomain(string $submittedUser): string
         return 'not_provided';
     }
 
-    $atPosition = strrpos($normalizedUser, '@');
-    if ($atPosition === false || $atPosition === strlen($normalizedUser) - 1) {
+    if (!filter_var($normalizedUser, FILTER_VALIDATE_EMAIL)) {
         return 'not_provided';
     }
 
-    return substr($normalizedUser, $atPosition + 1);
+    return $normalizedUser;
 }
 
 function escapeHtml(string $value): string
