@@ -39,49 +39,57 @@ logEducationalEvent('education_page_redirected', $sessionId);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Simulación Académica | Hospital San Vital</title>
+    <title>Simulacion Academica | Hospital San Vital</title>
     <link rel="stylesheet" href="assets/styles.css">
 </head>
 <body class="education-body">
     <main class="education-shell">
         <section class="education-card">
-            <p class="eyebrow">Hospital San Vital</p>
-            <h1>Esta interacción correspondía a una simulación académica</h1>
-            <p class="lead">
-                El ejercicio hace parte de un laboratorio controlado de concientización sobre phishing.
-                Su propósito es ayudar a identificar señales de riesgo antes de ingresar credenciales en
-                un sitio no verificado.
-            </p>
+            <div class="education-header">
+                <p class="eyebrow">Cierre del ejercicio</p>
+                <h1>Esta interaccion correspondia a una simulacion academica</h1>
+                <p class="lead">
+                    El objetivo era mostrar como una solicitud aparentemente formal puede inducir a
+                    ingresar credenciales en una pagina no confirmada. El flujo termina aqui para
+                    reforzar la pausa de verificacion antes de confiar en un acceso.
+                </p>
+            </div>
+
+            <div class="education-banner" role="note" aria-label="Resumen del ejercicio">
+                <strong>Resultado clave:</strong>
+                No se almacenaron usuarios ni contrasenas. El laboratorio solo registro metadatos
+                minimos para fines pedagogicos.
+            </div>
 
             <div class="education-grid">
                 <article class="info-panel">
-                    <h2>Señales de alerta del escenario</h2>
+                    <h2>Senales de alerta del escenario</h2>
                     <ul>
-                        <li>Solicitud urgente asociada a una supuesta actualización obligatoria.</li>
-                        <li>Enlace recibido por correo para ingresar al portal.</li>
-                        <li>Petición de validación de acceso desde un vínculo externo.</li>
-                        <li>Riesgo de digitar credenciales en un sitio no confirmado por la institución.</li>
+                        <li>Solicitud urgente asociada a una supuesta actualizacion obligatoria.</li>
+                        <li>Enlace recibido por correo para ingresar al portal desde una ruta externa.</li>
+                        <li>Peticion de validacion inmediata sin confirmar primero el dominio esperado.</li>
+                        <li>Riesgo de digitar credenciales en un sitio no verificado por la institucion.</li>
                     </ul>
                 </article>
 
                 <article class="info-panel">
-                    <h2>Buenas prácticas recomendadas</h2>
+                    <h2>Buenas practicas recomendadas</h2>
                     <ul>
-                        <li>Verificar cuidadosamente el remitente del mensaje.</li>
-                        <li>Revisar el dominio antes de confiar en una página de acceso.</li>
+                        <li>Verificar cuidadosamente el remitente y el contexto operativo del mensaje.</li>
+                        <li>Confirmar que la direccion pertenezca al dominio esperado: <strong>mail.hospital.com</strong>.</li>
                         <li>No ingresar credenciales desde enlaces recibidos por correo.</li>
-                        <li>Acceder manualmente al portal oficial desde rutas conocidas.</li>
-                        <li>Reportar mensajes sospechosos al área de seguridad institucional.</li>
+                        <li>Acceder manualmente al portal oficial escribiendo <strong>mail.hospital.com</strong>.</li>
+                        <li>Reportar mensajes sospechosos al area de seguridad institucional.</li>
                     </ul>
                 </article>
             </div>
 
             <div class="education-footer">
                 <p>
-                    Esta simulación no almacenó usuarios ni contraseñas. Solo se registraron metadatos
-                    mínimos con fines pedagógicos en el laboratorio.
+                    Revise siempre el dominio, la ruta de acceso y el contexto de la solicitud antes
+                    de autenticarse. En un entorno real, esa pausa suele marcar la diferencia entre
+                    un acceso seguro y un intento de phishing exitoso.
                 </p>
-                <a class="button-link" href="completar">Continuar a la página de formación</a>
             </div>
         </section>
     </main>
